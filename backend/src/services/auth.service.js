@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 import { generateRandomToken, hashToken } from "../utils/crypto.js";
+import { sendVerificationEmail } from "./email.service.js";
 
 const registerUser = async ({ name, email, password }) => {
   const normalizedEmail = email.trim().toLowerCase();
@@ -32,10 +33,40 @@ const registerUser = async ({ name, email, password }) => {
     emailVerificationTokenExpiresAt: verificationTokenExpiresAt,
   });
 
+  await sendVerificationEmail({
+    email: user.email,
+    name: user.name,
+    verificationToken,
+  });
+
   return {
     user,
-    verificationToken,
   };
 };
 
-export { registerUser };
+const verifyEmail = async (token) => {
+  const tokenHash = hashToken(token);
+
+  const user = await User.findOne({
+    emailVerificationTokenHash: tokenHash,
+    emailVerificationTokenExpiresAt: {
+      $gt: new Date(),
+    },
+  });
+
+  if (!user) {
+    const error = new Error("Invalid or expired verification token");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  user.emailVerified = true;
+  user.emailVerificationTokenHash = null;
+  user.emailVerificationTokenExpiresAt = null;
+
+  await user.save();
+
+  return user;
+};
+
+export { registerUser, verifyEmail };

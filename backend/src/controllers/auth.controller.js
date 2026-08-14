@@ -1,7 +1,8 @@
-import { registerUser } from "../services/auth.service.js";
+import { registerUser, verifyEmail } from "../services/auth.service.js";
 import { isValidEmail, isValidPassword } from "../utils/validation.js";
 import { sendSuccess } from "../utils/response.js";
 
+// Register Controller
 const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -47,4 +48,27 @@ const register = async (req, res, next) => {
   }
 };
 
-export { register };
+// Verify Email Controller
+const verifyEmailController = async (req, res, next) => {
+  try {
+    const { token } = req.params;
+
+    if (!token) {
+      const error = new Error("Verification token is required");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    // Call the verifyEmail function from auth.service.js
+    await verifyEmail(token);
+
+    return sendSuccess(res, {
+      statusCode: 200,
+      message: "Email verified successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { register, verifyEmailController };
