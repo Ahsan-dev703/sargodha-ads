@@ -5,6 +5,8 @@ import helmet from "helmet";
 
 import config from "./config/config.js";
 
+import authRoutes from "./routes/auth.routes.js";
+
 import notFoundMiddleware from "./middleware/notFound.middleware.js";
 import errorMiddleware from "./middleware/error.middleware.js";
 
@@ -31,10 +33,10 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// 404 handler
+app.use("/api/auth", authRoutes);
+
 app.use(notFoundMiddleware);
 
-// Global error handler
 app.use(errorMiddleware);
 
 export default app;
