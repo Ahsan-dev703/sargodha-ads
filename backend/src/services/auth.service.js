@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 import { generateRandomToken, hashToken } from "../utils/crypto.js";
 import { sendVerificationEmail } from "./email.service.js";
+import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
 
 const registerUser = async ({ name, email, password }) => {
   const normalizedEmail = email.trim().toLowerCase();
@@ -69,4 +70,55 @@ const verifyEmail = async (token) => {
   return user;
 };
 
-export { registerUser, verifyEmail };
+const loginUser = async ({ email, password }) => {
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const user = await User.findOne({
+    email: normalizedEmail,
+  }).select("+password");
+  
+
+  if (!user) {
+    const error = new Error("Invalid email or password");
+
+    error.statusCode = 401;
+
+    throw error;
+  }
+
+  const passwordMatches = await bcrypt.compare(password, user.password);
+
+  if (!passwordMatches) {
+    const error = new Error("Invalid email or password");
+
+    error.statusCode = 401;
+
+    throw error;
+  }
+
+  if (!user.emailVerified) {
+    const error = new Error("Please verify your email before logging in");
+
+    error.statusCode = 403;
+
+    throw error;
+  }
+
+  const accessToken = generateAccessToken(user);
+
+  const refreshToken = generateRefreshToken(user);
+
+  return {
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      emailVerified: user.emailVerified,
+    },
+
+    accessToken,
+    refreshToken,
+  };
+};
+
+export { registerUser, verifyEmail , loginUser };

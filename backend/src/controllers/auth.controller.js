@@ -1,6 +1,12 @@
-import { registerUser, verifyEmail } from "../services/auth.service.js";
+import {
+  registerUser,
+  verifyEmail,
+  loginUser,
+} from "../services/auth.service.js";
 import { isValidEmail, isValidPassword } from "../utils/validation.js";
 import { sendSuccess } from "../utils/response.js";
+import cookieParser from "cookie-parser";
+import config from "../config/config.js";
 
 // Register Controller
 const register = async (req, res, next) => {
@@ -71,4 +77,34 @@ const verifyEmailController = async (req, res, next) => {
   }
 };
 
-export { register, verifyEmailController };
+// Login Controller
+const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    const result = await loginUser({
+      email,
+      password,
+    });
+
+    res.cookie("refreshToken", result.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    return sendSuccess(res, {
+      statusCode: 200,
+      message: "Login successful",
+      data: {
+        user: result.user,
+        accessToken: result.accessToken,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { register, verifyEmailController, login };
