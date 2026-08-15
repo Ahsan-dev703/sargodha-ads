@@ -3,6 +3,8 @@ import User from "../models/User.js";
 import { generateRandomToken, hashToken } from "../utils/crypto.js";
 import { sendVerificationEmail } from "./email.service.js";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
+import RefreshToken from "../models/RefreshToken.js";
+import { saveRefreshToken } from "./refreshToken.service.js";
 
 const registerUser = async ({ name, email, password }) => {
   const normalizedEmail = email.trim().toLowerCase();
@@ -76,13 +78,10 @@ const loginUser = async ({ email, password }) => {
   const user = await User.findOne({
     email: normalizedEmail,
   }).select("+password");
-  
 
   if (!user) {
     const error = new Error("Invalid email or password");
-
     error.statusCode = 401;
-
     throw error;
   }
 
@@ -90,23 +89,21 @@ const loginUser = async ({ email, password }) => {
 
   if (!passwordMatches) {
     const error = new Error("Invalid email or password");
-
     error.statusCode = 401;
-
     throw error;
   }
 
   if (!user.emailVerified) {
     const error = new Error("Please verify your email before logging in");
-
     error.statusCode = 403;
-
     throw error;
   }
 
+  // Generate access and refresh tokens
   const accessToken = generateAccessToken(user);
-
   const refreshToken = generateRefreshToken(user);
+  // Save the refresh token in the database
+  await saveRefreshToken({ userId: user._id, refreshToken });
 
   return {
     user: {
@@ -121,4 +118,4 @@ const loginUser = async ({ email, password }) => {
   };
 };
 
-export { registerUser, verifyEmail , loginUser };
+export { registerUser, verifyEmail, loginUser };

@@ -7,6 +7,10 @@ import { isValidEmail, isValidPassword } from "../utils/validation.js";
 import { sendSuccess } from "../utils/response.js";
 import cookieParser from "cookie-parser";
 import config from "../config/config.js";
+import {
+  rotateRefreshToken,
+  revokeRefreshToken,
+} from "../services/refreshToken.service.js";
 
 // Register Controller
 const register = async (req, res, next) => {
@@ -107,4 +111,58 @@ const login = async (req, res, next) => {
   }
 };
 
-export { register, verifyEmailController, login };
+const refreshAccessToken = async (req, res, next) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!refreshToken) {
+      const error = new Error("Refresh token is required");
+      error.statusCode = 401;
+      throw error;
+    }
+
+    const result = await rotateRefreshToken(refreshToken);
+
+    res.cookie("refreshToken", result.refreshToken, {
+      httpOnly: true,
+      secure: config.env === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return sendSuccess(res, {
+      statusCode: 200,
+      message: "Access token refreshed",
+      data: {
+        accessToken: result.accessToken,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const logout = async (req, res, next) => {
+  try {
+    const refreshToken = req.cookies.refreshToken;
+
+    if (refreshToken) {
+      await revokeRefreshToken(refreshToken);
+    }
+
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: config.env === "production",
+      sameSite: "strict",
+    });
+
+    return sendSuccess(res, {
+      statusCode: 200,
+      message: "Logout successful",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { register, verifyEmailController, login, refreshAccessToken, logout };
