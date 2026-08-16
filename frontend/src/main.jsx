@@ -1,11 +1,16 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
-import "./styles/variables.css";
-import "./styles/globals.css";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 
-createRoot(document.getElementById('root')).render(
+import App from "@/App";
+import AppProviders from "@/context/AppProviders";
+
+import "@/styles/variables.css";
+import "@/styles/globals.css";
+
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
+    <AppProviders>
+      <App />
+    </AppProviders>
+  </StrictMode>
+);
