@@ -1,10 +1,18 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { FiAlertCircle, FiCheckCircle } from "react-icons/fi";
+
+import Alert from "@/components/ui/Alert/Alert";
+import Button from "@/components/ui/Button/Button";
+import Spinner from "@/components/ui/Spinner/Spinner";
 import { verifyEmail_fun } from "@/services/auth.service";
+
 import styles from "./VerifyEmail.module.css";
 
 function VerifyEmail() {
   const { token } = useParams();
+  const navigate = useNavigate();
+
   const [status, setStatus] = useState("loading");
   const [message, setMessage] = useState("");
 
@@ -20,18 +28,23 @@ function VerifyEmail() {
 
       try {
         const response = await verifyEmail_fun(token);
+
         if (cancelled) {
           return;
         }
+
         setMessage(
           response.message || "Your email has been verified successfully.",
         );
+
         setStatus("success");
       } catch (error) {
         if (cancelled) {
           return;
         }
+
         setMessage(error.message || "We could not verify your email.");
+
         setStatus("error");
       }
     };
@@ -47,7 +60,9 @@ function VerifyEmail() {
     return (
       <main className={styles.page}>
         <section className={styles.card}>
-          <div className={styles.spinner} aria-hidden="true" />
+          <div className={styles.loadingIcon} aria-hidden="true">
+            <Spinner label="Verifying email" />
+          </div>
 
           <h1 className={styles.title}>Verifying your email</h1>
 
@@ -70,14 +85,14 @@ function VerifyEmail() {
           }`}
           aria-hidden="true"
         >
-          {isSuccess ? "✓" : "!"}
+          {isSuccess ? <FiCheckCircle /> : <FiAlertCircle />}
         </div>
 
         <h1 className={styles.title}>
           {isSuccess ? "Email verified" : "Verification failed"}
         </h1>
 
-        <p className={styles.description}>{message}</p>
+        <Alert variant={isSuccess ? "success" : "error"}>{message}</Alert>
 
         {isSuccess && (
           <p className={styles.helpText}>
@@ -94,9 +109,14 @@ function VerifyEmail() {
         )}
 
         <div className={styles.actions}>
-          <Link to="/login" className={styles.loginButton}>
+          <Button
+            type="button"
+            size="lg"
+            className={styles.loginButton}
+            onClick={() => navigate("/login")}
+          >
             Go to login
-          </Link>
+          </Button>
         </div>
       </section>
     </main>

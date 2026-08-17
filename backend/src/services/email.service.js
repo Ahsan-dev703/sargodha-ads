@@ -38,4 +38,30 @@ If you did not create this account, you can safely ignore this email.
   });
 };
 
-export { sendVerificationEmail };
+const sendPasswordResetEmail = async ({ email, name, passwordResetToken }) => {
+  const resetUrl = `${config.client.url}/reset-password/${passwordResetToken}`;
+
+  const html = await loadEmailTemplate("password-reset", {
+    NAME: name,
+    RESET_URL: resetUrl,
+  });
+
+  await transporter.sendMail({
+    from: config.email.from,
+
+    to: email,
+
+    subject: "Reset your Sargodha Ads password",
+
+    text: `
+Hello ${name},
+We received a request to reset your password for Sargodha Ads.
+${resetUrl}
+This password reset link expires in 15 minutes.
+If you did not request this, you can safely ignore this email.
+`,
+    html,
+  });
+};
+
+export { sendVerificationEmail, sendPasswordResetEmail };

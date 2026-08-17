@@ -48,6 +48,30 @@
   gap: var(--space-5);
 }
 
+.passwordFieldWrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.forgotPasswordWrap {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.forgotPasswordLink {
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.forgotPasswordLink:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
 .footer {
   margin-top: var(--space-6);
   display: flex;
@@ -69,7 +93,7 @@
 }
 
 .alertWrapper {
-    margin-bottom: var(--space-3);
+  margin-bottom: var(--space-3);
 }
 
 @media (max-width: 640px) {

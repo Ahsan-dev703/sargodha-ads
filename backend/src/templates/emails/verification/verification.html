@@ -1,88 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verify Your Email - Sargodha Ads</title>
+    <style>
+      {{CSS}}
+    </style>
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify Your Sargodha Ads Account</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-
-<body>
-    <div class="email-container">
-        <!-- Brand Header -->
-        <div class="email-header">
-            <div class="brand-badge">
-                <span class="brand-icon">S</span>
-                <span class="brand-name">SARGODHA ADS</span>
-            </div>
+  <body>
+    <div class="email-shell">
+      <div class="email-card">
+        <div class="brand-wrap">
+          <table
+            role="presentation"
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            align="center"
+            style="margin: 0 auto"
+          >
+            <tr>
+              <td align="center" valign="middle">
+                <span class="brand-mark">S</span>
+              </td>
+              <td align="center" valign="middle">
+                <span class="brand-name">Sargodha Ads</span>
+              </td>
+            </tr>
+          </table>
         </div>
 
-        <!-- Main Email Card -->
-        <div class="email-card">
-            <!-- Top Hero Icon -->
-            <div class="icon-wrapper">
-                <div class="icon-circle">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6V18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6ZM20 6L12 11L4 6H20ZM20 18H4V8L12 13L20 8V18Z"
-                            fill="#2563EB" />
-                    </svg>
-                </div>
-            </div>
+        <div class="content">
+          <p class="eyebrow">Account activation</p>
+          <h1>Verify Your Email</h1>
 
-            <!-- Content Section -->
-            <div class="email-content">
-                <h1 class="title">Verify Your Email Address</h1>
+          <p class="greeting">Hello <strong>{{NAME}}</strong>,</p>
 
-                <p class="greeting">Hello <span class="highlight">{{NAME}}</span>,</p>
+          <p class="message">
+            Thanks for joining Sargodha Ads. Please verify your email address to
+            activate your account and get started.
+          </p>
 
-                <p class="body-text">
-                    Welcome to <strong>Sargodha Ads</strong>! We're excited to have you on board. Please confirm your
-                    email address to activate your account and access full platform features.
-                </p>
+          <!-- Email-Safe Centered Button -->
+          <table
+            role="presentation"
+            border="0"
+            cellpadding="0"
+            cellspacing="0"
+            width="100%"
+            class="button-wrapper"
+          >
+            <tr>
+              <td align="center" style="padding: 10px 0">
+                <table
+                  role="presentation"
+                  border="0"
+                  cellpadding="0"
+                  cellspacing="0"
+                >
+                  <tr>
+                    <td
+                      align="center"
+                      bgcolor="#16a34a"
+                      style="border-radius: 10px"
+                    >
+                      <a
+                        href="{{VERIFICATION_URL}}"
+                        class="verify-button"
+                        target="_blank"
+                      >
+                        Verify Email
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
 
-                <!-- Primary Call to Action Button -->
-                <div class="cta-wrapper">
-                    <a href="{{VERIFICATION_URL}}" class="btn-primary">Verify Email Address</a>
-                </div>
+          <p class="expiry">
+            This link expires in <strong>15 minutes</strong>.
+          </p>
 
-                <!-- Expiry Alert Box -->
-                <div class="alert-box">
-                    <span class="alert-icon">⏱</span>
-                    <span class="alert-text">This verification link will expire in <strong>15 minutes</strong> for
-                        security reasons.</span>
-                </div>
-
-                <div class="divider"></div>
-
-                <!-- Fallback URL Section -->
-                <div class="fallback-section">
-                    <p class="fallback-label">Button not working? Copy and paste this link into your web browser:</p>
-                    <div class="url-container">
-                        <span class="url-text">{{VERIFICATION_URL}}</span>
-                    </div>
-                </div>
-
-                <!-- Security Note -->
-                <p class="security-note">
-                    If you didn't create an account with Sargodha Ads, you can safely ignore this email. No action is
-                    required.
-                </p>
-            </div>
-
-            <!-- Footer Section -->
-            <div class="email-footer">
-                <div class="footer-links">
-                    <a href="#">Help Center</a> &bull;
-                    <a href="#">Privacy Policy</a> &bull;
-                    <a href="#">Terms of Service</a>
-                </div>
-                <p class="copyright">&copy; 2026 Sargodha Ads. All rights reserved.</p>
-                <p class="address">Sargodha, Punjab, Pakistan</p>
-            </div>
+          <p class="security">
+            If you didn't create this account, you can safely ignore this email.
+          </p>
         </div>
+      </div>
     </div>
-</body>
-
+  </body>
 </html>

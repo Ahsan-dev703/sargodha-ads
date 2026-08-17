@@ -17,6 +17,9 @@ function AppLayout() {
           <Outlet />
         </div>
       </main>
+      <footer>
+        footer
+      </footer>
     </div>
   );
 }

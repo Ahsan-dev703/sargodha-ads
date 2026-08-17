@@ -1,14 +1,18 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+
 import Button from "@/components/ui/Button/Button";
 import Alert from "@/components/ui/Alert/Alert";
 import Input from "@/components/ui/Input/Input";
+
 import { useAuth } from "@/hooks/useAuth";
+
 import styles from "./Login.module.css";
-import { useState } from "react";
 
 function Login() {
   const { login, isAuthenticated } = useAuth();
+
   const [serverError, setServerError] = useState("");
 
   const location = useLocation();
@@ -27,15 +31,21 @@ function Login() {
   }
 
   const onSubmit = async (data) => {
+    setServerError("");
+
     try {
       await login({
         email: data.email,
         password: data.password,
       });
 
-      const from = location.state?.from?.pathname || "/dashboard";
+      const from = location.state?.from;
 
-      navigate(from, {
+      const destination = from
+        ? `${from.pathname}${from.search}${from.hash}`
+        : "/dashboard";
+
+      navigate(destination, {
         replace: true,
       });
     } catch (error) {
@@ -51,10 +61,10 @@ function Login() {
 
           <p className={styles.subtitle}>Login to your Sargodha Ads account.</p>
         </div>
-        
+
         {serverError && (
           <div className={styles.alertWrapper}>
-            <Alert>{serverError}</Alert>
+            <Alert variant="error">{serverError}</Alert>
           </div>
         )}
 
@@ -73,33 +83,37 @@ function Login() {
             error={errors.email?.message}
             {...register("email", {
               required: "Email is required.",
-
               pattern: {
                 value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-
                 message: "Enter a valid email address.",
               },
             })}
           />
 
-          <Input
-            id="password"
-            label="Password"
-            type="password"
-            placeholder="Enter your password"
-            autoComplete="current-password"
-            disabled={isSubmitting}
-            error={errors.password?.message}
-            {...register("password", {
-              required: "Password is required.",
+          <div className={styles.passwordFieldWrap}>
+            <Input
+              id="password"
+              label="Password"
+              type="password"
+              placeholder="Enter your password"
+              autoComplete="current-password"
+              disabled={isSubmitting}
+              error={errors.password?.message}
+              {...register("password", {
+                required: "Password is required.",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters.",
+                },
+              })}
+            />
 
-              minLength: {
-                value: 8,
-
-                message: "Password must be at least 8 characters.",
-              },
-            })}
-          />
+            <div className={styles.forgotPasswordWrap}>
+              <Link to="/forgot-password" className={styles.forgotPasswordLink}>
+                Forgot password?
+              </Link>
+            </div>
+          </div>
 
           <Button type="submit" size="lg" loading={isSubmitting}>
             Sign in

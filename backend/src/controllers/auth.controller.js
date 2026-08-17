@@ -1,6 +1,9 @@
 import {
   registerUser,
   verifyEmail,
+  resendVerificationEmail as resendVerificationEmailService,
+  forgotPassword as forgotPasswordService,
+  resetPassword as resetPasswordService,
   loginUser,
 } from "../services/auth.service.js";
 import { isValidEmail, isValidPassword } from "../utils/validation.js";
@@ -81,6 +84,34 @@ const verifyEmailController = async (req, res, next) => {
   }
 };
 
+const resendVerificationEmail = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      const error = new Error("Email address is required");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    if (!isValidEmail(email)) {
+      const error = new Error("Invalid email address");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    await resendVerificationEmailService(email);
+
+    return sendSuccess(res, {
+      statusCode: 200,
+      message:
+        "If an unverified account exists with this email, a new verification email has been sent.",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Login Controller
 const login = async (req, res, next) => {
   try {
@@ -105,6 +136,71 @@ const login = async (req, res, next) => {
         user: result.user,
         accessToken: result.accessToken,
       },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      const error = new Error("Email address is required");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    if (!isValidEmail(email)) {
+      const error = new Error("Invalid email address");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    await forgotPasswordService(email);
+
+    return sendSuccess(res, {
+      statusCode: 200,
+      message:
+        "If an account exists with this email, we have sent instructions to reset your password.",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const resetPassword = async (req, res, next) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    if (!token) {
+      const error = new Error("Password reset token is required");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    if (!password) {
+      const error = new Error("New password is required");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    if (!isValidPassword(password)) {
+      const error = new Error("Password must be at least 8 characters");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    await resetPasswordService({
+      token,
+      password,
+    });
+
+    return sendSuccess(res, {
+      statusCode: 200,
+      message: "Password reset successfully. You can now log in.",
     });
   } catch (error) {
     next(error);
@@ -165,4 +261,13 @@ const logout = async (req, res, next) => {
   }
 };
 
-export { register, verifyEmailController, login, refreshAccessToken, logout };
+export {
+  register,
+  verifyEmailController,
+  resendVerificationEmail,
+  login,
+  forgotPassword,
+  resetPassword,
+  refreshAccessToken,
+  logout,
+};

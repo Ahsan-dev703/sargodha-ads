@@ -18,6 +18,15 @@ async function verifyEmail_fun(token) {
   });
 }
 
+async function resendVerificationEmail(email) {
+  return api("/auth/resend-verification", {
+    method: "POST",
+    body: JSON.stringify({
+      email,
+    }),
+  });
+}
+
 async function loginUser({ email, password }) {
   return api("/auth/login", {
     method: "POST",
@@ -29,6 +38,24 @@ async function loginUser({ email, password }) {
   });
 }
 
+const forgotPassword = async (email) => {
+  return api("/auth/forgot-password", {
+    method: "POST",
+    body: JSON.stringify({
+      email,
+    }),
+  });
+};
+
+const resetPassword = async ({ token, password }) => {
+  return api(`/auth/reset-password/${encodeURIComponent(token)}`, {
+    method: "POST",
+    body: JSON.stringify({
+      password,
+    }),
+  });
+};
+
 async function logoutUser() {
   return api("/auth/logout", {
     method: "POST",
@@ -39,4 +66,13 @@ async function getCurrentUser() {
   return api("/users/me");
 }
 
-export { registerUser, verifyEmail_fun, loginUser, logoutUser, getCurrentUser };
+export {
+  registerUser,
+  verifyEmail_fun,
+  resendVerificationEmail,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+  logoutUser,
+  getCurrentUser,
+};

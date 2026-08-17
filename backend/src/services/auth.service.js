@@ -1,7 +1,10 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 import { generateRandomToken, hashToken } from "../utils/crypto.js";
-import { sendVerificationEmail } from "./email.service.js";
+import {
+  sendVerificationEmail,
+  sendPasswordResetEmail,
+} from "./email.service.js";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
 import RefreshToken from "../models/RefreshToken.js";
 import { saveRefreshToken } from "./refreshToken.service.js";
@@ -71,6 +74,37 @@ const verifyEmail = async (token) => {
   return user;
 };
 
+const resendVerificationEmail = async (email) => {
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const user = await User.findOne({
+    email: normalizedEmail,
+  });
+
+  if (!user) {
+    return;
+  }
+
+  if (user.emailVerified) {
+    return;
+  }
+
+  const verificationToken = generateRandomToken();
+  const verificationTokenHash = hashToken(verificationToken);
+  const verificationTokenExpiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+  user.emailVerificationTokenHash = verificationTokenHash;
+  user.emailVerificationTokenExpiresAt = verificationTokenExpiresAt;
+
+  await user.save();
+
+  await sendVerificationEmail({
+    email: user.email,
+    name: user.name,
+    verificationToken,
+  });
+};
+
 const loginUser = async ({ email, password }) => {
   const normalizedEmail = email.trim().toLowerCase();
 
@@ -117,4 +151,66 @@ const loginUser = async ({ email, password }) => {
   };
 };
 
-export { registerUser, verifyEmail, loginUser };
+const forgotPassword = async (email) => {
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const user = await User.findOne({
+    email: normalizedEmail,
+  });
+
+  if (!user) {
+    return;
+  }
+
+  const passwordResetToken = generateRandomToken();
+  const passwordResetTokenHash = hashToken(passwordResetToken);
+  const passwordResetTokenExpiresAt = new Date(Date.now() + 15 * 60 * 1000);
+
+  user.passwordResetTokenHash = passwordResetTokenHash;
+  user.passwordResetTokenExpiresAt = passwordResetTokenExpiresAt;
+  await user.save();
+
+  await sendPasswordResetEmail({
+    email: user.email,
+    name: user.name,
+    passwordResetToken,
+  });
+};
+
+const resetPassword = async ({ token, password }) => {
+  const tokenHash = hashToken(token);
+
+  const user = await User.findOne({
+    passwordResetTokenHash: tokenHash,
+    passwordResetTokenExpiresAt: {
+      $gt: new Date(),
+    },
+  }).select("+password");
+
+  if (!user) {
+    const error = new Error("Invalid or expired password reset token");
+    error.statusCode = 400;
+    throw error;
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 12);
+
+  user.password = hashedPassword;
+
+  // Invalidate the reset token immediately after successful use
+  user.passwordResetTokenHash = null;
+  user.passwordResetTokenExpiresAt = null;
+
+  await user.save();
+
+  return user;
+};
+
+export {
+  registerUser,
+  verifyEmail,
+  resendVerificationEmail,
+  loginUser,
+  forgotPassword,
+  resetPassword,
+};

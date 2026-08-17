@@ -14,6 +14,8 @@ import Profile from "@/pages/Profile/Profile";
 import ProtectedRoute from "@/routes/ProtectedRoute";
 import VerifyEmailPending from "@/pages/VerifyEmailPending/VerifyEmailPending";
 import VerifyEmail from "@/pages/VerifyEmail/VerifyEmail";
+import ForgotPassword from "@/pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "@/pages/ResetPassword/ResetPassword";
 
 function AppRouter() {
   return (
@@ -22,6 +24,8 @@ function AppRouter() {
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-email-pending" element={<VerifyEmailPending />} />
         <Route path="/verify-email/:token" element={<VerifyEmail />} />
