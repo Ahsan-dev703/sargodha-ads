@@ -23,7 +23,6 @@ const registerUser = async ({ name, email, password }) => {
 
   const verificationToken = generateRandomToken();
   const verificationTokenHash = hashToken(verificationToken);
-
   // Set the token expiration time to 15 minutes from now
   const verificationTokenExpiresAt = new Date(Date.now() + 15 * 60 * 1000);
 

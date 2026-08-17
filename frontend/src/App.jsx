@@ -1,8 +1,11 @@
+import { BrowserRouter } from "react-router-dom";
+import AppRouter from "@/routes/AppRouter";
+
 function App() {
   return (
-    <div>
-      <h1>Sargodha Ads</h1>
-    </div>
+    <BrowserRouter>
+      <AppRouter />
+    </BrowserRouter>
   );
 }
 

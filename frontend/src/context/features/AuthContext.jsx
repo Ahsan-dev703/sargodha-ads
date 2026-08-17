@@ -1,20 +1,6 @@
-import {
-  createContext,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
-
-import {
-  login as loginService,
-  logout as logoutService,
-  getCurrentUser,
-} from "@/services/auth.service";
-
-import {
-  setAccessToken,
-  clearAccessToken,
-} from "@/services/token";
+import { createContext, useCallback, useEffect, useState } from "react";
+import { getCurrentUser, loginUser, logoutUser } from "@/services/auth.service";
+import { setAccessToken, clearAccessToken } from "@/services/token";
 
 const AuthContext = createContext(null);
 
@@ -22,59 +8,48 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchCurrentUser = useCallback(
-    async () => {
-      try {
-        const response =
-          await getCurrentUser();
-
-        const currentUser =
-          response.data.user;
-
-        setUser(currentUser);
-
-        return currentUser;
-      } catch {
-        setUser(null);
-
-        return null;
-      }
-    },
-    []
-  );
+  const fetchCurrentUser = useCallback(async () => {
+    try {
+      const response = await getCurrentUser();
+      const currentUser = response.data.user;
+      setUser(currentUser);
+      return currentUser;
+    } catch (error) {
+      setUser(null);
+      return null;
+    }
+  }, []);
 
   useEffect(() => {
     const initializeAuth = async () => {
-      await fetchCurrentUser();
-
-      setLoading(false);
+      try {
+        await fetchCurrentUser();
+      } finally {
+        setLoading(false);
+      }
     };
 
     initializeAuth();
   }, [fetchCurrentUser]);
 
-  const login = async ({
-    email,
-    password,
-  }) => {
-    const response =
-      await loginService({
-        email,
-        password,
-      });
+  const login = async ({ email, password }) => {
+    const response = await loginUser({
+      email,
+      password,
+    });
 
-    setAccessToken(
-      response.data.accessToken
-    );
+    const accessToken = response.data.accessToken;
+    const loggedInUser = response.data.user;
 
-    setUser(response.data.user);
+    setAccessToken(accessToken);
+    setUser(loggedInUser);
 
     return response;
   };
 
   const logout = async () => {
     try {
-      await logoutService();
+      await logoutUser();
     } finally {
       clearAccessToken();
       setUser(null);
@@ -89,12 +64,7 @@ function AuthProvider({ children }) {
     logout,
     fetchCurrentUser,
   };
-
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export {AuthContext , AuthProvider};
+export { AuthContext, AuthProvider };

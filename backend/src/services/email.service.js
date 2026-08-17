@@ -29,16 +29,11 @@ const sendVerificationEmail = async ({ email, name, verificationToken }) => {
 
     text: `
 Hello ${name},
-
 Please verify your Sargodha Ads account:
-
 ${verificationUrl}
-
 This verification link expires in 15 minutes.
-
 If you did not create this account, you can safely ignore this email.
 `,
-
     html,
   });
 };

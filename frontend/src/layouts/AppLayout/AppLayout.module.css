@@ -1,0 +1,122 @@
+/* =========================================================
+   APP LAYOUT
+   ========================================================= */
+
+.layout {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    background: var(--color-background);
+    color: var(--color-text);
+}
+
+
+/* =========================================================
+   HEADER / NAVBAR
+   ========================================================= */
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-navbar);
+
+    height: var(--navbar-height);
+
+    background: var(--color-surface);
+
+    border-bottom: 1px solid var(--color-border);
+}
+
+
+.headerContainer {
+    width: min(calc(100% - (var(--container-padding-desktop) * 2)),
+            var(--container-width));
+
+    height: 100%;
+
+    margin-inline: auto;
+
+    display: flex;
+    align-items: center;
+}
+
+
+.logo {
+    color: var(--color-text);
+
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-extrabold);
+    line-height: 1;
+
+    letter-spacing: -0.02em;
+
+    transition:
+        color var(--transition-fast);
+}
+
+.logo:hover {
+    color: var(--color-primary);
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.main {
+    flex: 1;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+   ========================================================= */
+
+.mainContainer {
+    width: min(calc(100% - (var(--container-padding-desktop) * 2)),
+            var(--content-width));
+
+    margin-inline: auto;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1024px) {
+    .headerContainer {
+        width: min(calc(100% - (var(--container-padding-tablet) * 2)),
+                var(--container-width));
+    }
+
+    .mainContainer {
+        width: min(calc(100% - (var(--container-padding-tablet) * 2)),
+                var(--content-width));
+    }
+}
+
+
+@media (max-width: 640px) {
+    .header {
+        height: var(--navbar-height-mobile);
+    }
+
+    .headerContainer {
+        width: min(calc(100% - (var(--container-padding-mobile) * 2)),
+                var(--container-width));
+    }
+
+    .mainContainer {
+        width: min(calc(100% - (var(--container-padding-mobile) * 2)),
+                var(--content-width));
+    }
+
+    .logo {
+        font-size: var(--font-size-lg);
+    }
+}

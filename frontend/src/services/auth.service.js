@@ -1,23 +1,42 @@
 import api from "@/services/api";
 
-const login = async ({ email, password }) => {
+async function registerUser({ name, email, password }) {
+  return api("/auth/register", {
+    method: "POST",
+
+    body: JSON.stringify({
+      name,
+      email,
+      password,
+    }),
+  });
+}
+
+async function verifyEmail_fun(token) {
+  return api(`/auth/verify-email/${encodeURIComponent(token)}`, {
+    method: "GET",
+  });
+}
+
+async function loginUser({ email, password }) {
   return api("/auth/login", {
     method: "POST",
+
     body: JSON.stringify({
       email,
       password,
     }),
   });
-};
+}
 
-const logout = async () => {
+async function logoutUser() {
   return api("/auth/logout", {
     method: "POST",
   });
-};
+}
 
-const getCurrentUser = async () => {
+async function getCurrentUser() {
   return api("/users/me");
-};
+}
 
-export { login, logout, getCurrentUser };
+export { registerUser, verifyEmail_fun, loginUser, logoutUser, getCurrentUser };

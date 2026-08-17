@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+// import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import App from "@/App";
@@ -8,9 +8,9 @@ import "@/styles/variables.css";
 import "@/styles/globals.css";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <AppProviders>
-      <App />
-    </AppProviders>
-  </StrictMode>
+  // <StrictMode>
+  <AppProviders>
+    <App />
+  </AppProviders>,
+  // </StrictMode>
 );
