@@ -1,6 +1,7 @@
 import { getAccessToken, setAccessToken, clearAccessToken } from "./token.js";
 
 const API_URL = "http://localhost:3000/api";
+
 let refreshPromise = null;
 
 const NO_REFRESH_ENDPOINTS = [
@@ -22,12 +23,15 @@ const refreshAccessToken = async () => {
     })
       .then(async (response) => {
         const data = await response.json();
+
         if (!response.ok) {
           throw new Error(data.message || "Unable to refresh access token");
         }
 
         const newAccessToken = data.data.accessToken;
+
         setAccessToken(newAccessToken);
+
         return newAccessToken;
       })
       .finally(() => {
@@ -38,9 +42,6 @@ const refreshAccessToken = async () => {
   return refreshPromise;
 };
 
-/*
- * Main API function.
- */
 const api = async (endpoint, options = {}, retry = true) => {
   const accessToken = getAccessToken();
 
@@ -79,11 +80,16 @@ const api = async (endpoint, options = {}, retry = true) => {
 
   if (!response.ok) {
     const error = new Error(data.message || "Something went wrong");
+
     error.status = response.status;
     error.data = data;
+
     throw error;
   }
+
   return data;
 };
+
+export { api, refreshAccessToken };
 
 export default api;

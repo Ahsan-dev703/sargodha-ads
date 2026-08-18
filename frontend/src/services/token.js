@@ -5,7 +5,7 @@ const getAccessToken = () => {
 };
 
 const setAccessToken = (token) => {
-  accessToken = token;
+  accessToken = token || null;
 };
 
 const clearAccessToken = () => {

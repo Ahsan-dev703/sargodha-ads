@@ -62,8 +62,16 @@ async function logoutUser() {
   });
 }
 
-async function getCurrentUser() {
-  return api("/users/me");
+const getCurrentUser = async () => {
+  return api("/users/me", {
+    method: "GET",
+  });
+};
+
+async function refreshAccessToken() {
+  return api("/auth/refresh-token", {
+    method: "POST",
+  });
 }
 
 export {
@@ -75,4 +83,5 @@ export {
   resetPassword,
   logoutUser,
   getCurrentUser,
+  refreshAccessToken,
 };

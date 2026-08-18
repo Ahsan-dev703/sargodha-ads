@@ -10,9 +10,9 @@ const authenticate = (req, res, next) => {
       throw error;
     }
 
-    const [scheme, token] = authorization.split(" ");
+    const [scheme, token, ...extra] = authorization.trim().split(/\s+/);
 
-    if (scheme !== "Bearer" || !token) {
+    if (scheme !== "Bearer" || !token || extra.length > 0) {
       const error = new Error("Invalid authorization header");
       error.statusCode = 401;
       throw error;

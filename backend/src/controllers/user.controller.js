@@ -1,8 +1,8 @@
-import User from "../models/User.js";
+import { getUserById } from "../services/user.service.js";
 
 const getCurrentUser = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const user = await getUserById(req.user.id);
 
     if (!user) {
       const error = new Error("User not found");

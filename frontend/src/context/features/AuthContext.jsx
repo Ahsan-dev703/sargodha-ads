@@ -1,6 +1,13 @@
-import { createContext, useCallback, useEffect, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+
 import { getCurrentUser, loginUser, logoutUser } from "@/services/auth.service";
-import { setAccessToken, clearAccessToken } from "@/services/token";
+import { clearAccessToken, setAccessToken } from "@/services/token";
 
 const AuthContext = createContext(null);
 
@@ -8,62 +15,97 @@ function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchCurrentUser = useCallback(async () => {
+  const refreshSession = useCallback(async () => {
     try {
-      const response = await getCurrentUser();
-      const currentUser = response.data.user;
-      setUser(currentUser);
-      return currentUser;
+      setLoading(true);
+
+      const refreshResponse = await fetch(
+        "http://localhost:3000/api/auth/refresh-token",
+        {
+          method: "POST",
+          credentials: "include",
+        },
+      );
+
+      const refreshData = await refreshResponse.json();
+
+      if (!refreshResponse.ok) {
+        setUser(null);
+        clearAccessToken();
+        return false;
+      }
+
+      const accessToken = refreshData?.data?.accessToken;
+
+      if (accessToken) {
+        setAccessToken(accessToken);
+      }
+
+      const meResponse = await fetch("http://localhost:3000/api/users/me", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+          "Content-Type": "application/json",
+        },
+      });
+
+      const meData = await meResponse.json();
+
+      if (!meResponse.ok) {
+        setUser(null);
+        clearAccessToken();
+        return false;
+      }
+
+      setUser(meData?.data?.user ?? null);
+      return true;
     } catch (error) {
       setUser(null);
-      return null;
+      clearAccessToken();
+      return false;
+    } finally {
+      setLoading(false);
     }
   }, []);
 
-  useEffect(() => {
-    const initializeAuth = async () => {
-      try {
-        await fetchCurrentUser();
-      } finally {
-        setLoading(false);
-      }
-    };
+  const login = useCallback(async ({ email, password }) => {
+    const response = await loginUser({ email, password });
+    const accessToken = response?.data?.accessToken;
 
-    initializeAuth();
-  }, [fetchCurrentUser]);
+    if (accessToken) {
+      setAccessToken(accessToken);
+    }
 
-  const login = async ({ email, password }) => {
-    const response = await loginUser({
-      email,
-      password,
-    });
-
-    const accessToken = response.data.accessToken;
-    const loggedInUser = response.data.user;
-
-    setAccessToken(accessToken);
-    setUser(loggedInUser);
-
+    setUser(response?.data?.user ?? null);
     return response;
-  };
+  }, []);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       await logoutUser();
     } finally {
       clearAccessToken();
       setUser(null);
     }
-  };
+  }, []);
 
-  const value = {
-    user,
-    loading,
-    isAuthenticated: Boolean(user),
-    login,
-    logout,
-    fetchCurrentUser,
-  };
+  useEffect(() => {
+    refreshSession();
+  }, [refreshSession]);
+
+  const value = useMemo(
+    () => ({
+      user,
+      loading,
+      isAuthenticated: Boolean(user),
+      login,
+      logout,
+      refreshSession,
+    }),
+    [user, loading, login, logout, refreshSession],
+  );
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

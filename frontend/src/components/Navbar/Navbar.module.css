@@ -1,0 +1,367 @@
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-navbar);
+
+  width: 100%;
+  height: var(--navbar-height);
+
+  background: var(--color-surface);
+
+  border-bottom: 1px solid var(--color-border);
+}
+
+.container {
+  width: min(
+    calc(100% - (var(--container-padding-desktop) * 2)),
+    var(--container-width)
+  );
+
+  height: 100%;
+  margin-inline: auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: var(--space-6);
+}
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.logo {
+  flex-shrink: 0;
+
+  color: var(--color-text);
+
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-extrabold);
+
+  line-height: 1;
+  letter-spacing: -0.02em;
+
+  text-decoration: none;
+
+  transition: color var(--transition-fast);
+}
+
+.logo:hover {
+  color: var(--color-primary);
+}
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.navigation {
+  display: flex;
+  align-items: center;
+
+  gap: var(--space-2);
+}
+
+.navLink {
+  min-height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: var(--space-2);
+
+  padding: 0 var(--space-3);
+
+  border-radius: var(--radius-md);
+
+  color: var(--color-text-secondary);
+
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+
+  text-decoration: none;
+
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.navLink svg {
+  width: 17px;
+  height: 17px;
+
+  flex-shrink: 0;
+}
+
+.navLink:hover {
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+.navLink.active {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+/* =========================================================
+   CREATE AD
+   ========================================================= */
+
+.createAd {
+  margin-left: var(--space-2);
+
+  background: var(--color-primary);
+
+  color: #ffffff;
+
+  font-weight: var(--font-weight-semibold);
+}
+
+.createAd:hover {
+  background: var(--color-primary-hover);
+  color: #ffffff;
+}
+
+/* =========================================================
+   USER SECTION
+   ========================================================= */
+
+.userSection {
+  display: flex;
+  align-items: center;
+
+  gap: var(--space-3);
+
+  flex-shrink: 0;
+}
+
+.profileLink {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: var(--space-3);
+
+  padding: var(--space-1) var(--space-2);
+
+  border-radius: var(--radius-md);
+
+  color: inherit;
+
+  text-decoration: none;
+
+  transition: background-color var(--transition-fast);
+}
+
+.profileLink:hover {
+  background: var(--color-background);
+}
+
+/* =========================================================
+   AVATAR
+   ========================================================= */
+
+.avatar {
+  width: 38px;
+  height: 38px;
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  border-radius: var(--radius-full);
+
+  background: var(--color-primary-light);
+
+  color: var(--color-primary);
+
+  font-size: var(--font-size-md);
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+/* =========================================================
+   USER INFO
+   ========================================================= */
+
+.userInfo {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.userName {
+  max-width: 140px;
+
+  overflow: hidden;
+
+  color: var(--color-text);
+
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+
+  line-height: 1.2;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.userEmail {
+  max-width: 160px;
+
+  overflow: hidden;
+
+  color: var(--color-text-muted);
+
+  font-size: var(--font-size-xs);
+
+  line-height: 1.2;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+.logoutButton {
+  width: 38px;
+  height: 38px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+
+  background: transparent;
+
+  color: var(--color-text-secondary);
+
+  cursor: pointer;
+
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.logoutButton svg {
+  width: 17px;
+  height: 17px;
+}
+
+.logoutButton:hover {
+  background: var(--color-background);
+
+  color: var(--color-danger);
+
+  border-color: var(--color-danger);
+}
+
+.logoutButton:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1024px) {
+  .container {
+    width: min(
+      calc(100% - (var(--container-padding-tablet) * 2)),
+      var(--container-width)
+    );
+  }
+
+  .userEmail {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation {
+    gap: var(--space-1);
+  }
+
+  .navLink {
+    padding: 0 var(--space-2);
+  }
+
+  .navLink span {
+    display: none;
+  }
+
+  .createAd span {
+    display: inline;
+  }
+
+  .userInfo {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    height: var(--navbar-height-mobile);
+  }
+
+  .container {
+    width: min(
+      calc(100% - (var(--container-padding-mobile) * 2)),
+      var(--container-width)
+    );
+
+    gap: var(--space-2);
+  }
+
+  .logo {
+    font-size: var(--font-size-lg);
+  }
+
+  .navigation {
+    margin-left: auto;
+  }
+
+  .createAd {
+    margin-left: 0;
+  }
+
+  .profileLink {
+    padding: var(--space-1);
+  }
+
+  .avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .logoutButton {
+    width: 36px;
+    height: 36px;
+  }
+}
