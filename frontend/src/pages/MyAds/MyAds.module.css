@@ -1,366 +1,437 @@
-/* =========================================================
-   MY ADS PAGE
-   ========================================================= */
-
 .page {
   width: 100%;
-  padding-block: var(--space-8);
+  padding-block: clamp(var(--space-8), 5vw, var(--space-12));
 }
-
-/* =========================================================
-   HEADER
-   ========================================================= */
 
 .header {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
 
-  margin-bottom: var(--space-6);
+.eyebrow {
+  display: block;
+  margin-bottom: var(--space-2);
+  color: var(--color-primary-light);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .title {
   margin: 0;
-
   color: var(--color-text);
-
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
+  font-size: clamp(var(--font-size-2xl), 4vw, var(--font-size-3xl));
+  font-weight: var(--font-weight-extrabold);
   line-height: var(--line-height-tight);
 }
 
 .subtitle {
-  margin-top: var(--space-2);
-
+  max-width: 540px;
+  margin: var(--space-3) 0 0;
   color: var(--color-text-secondary);
-
   font-size: var(--font-size-sm);
   line-height: var(--line-height-relaxed);
 }
-
-/* =========================================================
-   ALERT
-   ========================================================= */
 
 .alert {
   margin-bottom: var(--space-6);
 }
 
-/* =========================================================
-   LOADING STATE
-   ========================================================= */
-
 .loadingState {
   min-height: 300px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   gap: var(--space-4);
-
   color: var(--color-text-secondary);
-
   text-align: center;
 }
 
 .loadingState p {
   margin: 0;
-
   font-size: var(--font-size-sm);
 }
 
-/* =========================================================
-   EMPTY STATE
-   ========================================================= */
-
 .emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 360px;
   padding: var(--space-10) var(--space-6);
-
   text-align: center;
-
   background: var(--color-surface);
-
-  border: 1px solid var(--color-border);
+  border: 1px dashed var(--color-border-hover);
   border-radius: var(--radius-xl);
+}
 
-  box-shadow: var(--shadow-sm);
+.emptyIcon {
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  color: var(--color-primary-light);
+  background: var(--color-primary-soft);
+  border: 1px solid rgba(var(--color-primary-rgb), 0.3);
+  border-radius: 50%;
+}
+
+.emptyIcon svg {
+  width: 24px;
+  height: 24px;
 }
 
 .emptyTitle {
-  margin: 0;
-
-  color: var(--color-text);
-
+  margin: var(--space-5) 0 0;
   font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
 }
 
 .emptyDescription {
-  max-width: 480px;
-
-  margin: var(--space-2) auto 0;
-
+  max-width: 420px;
+  margin: var(--space-2) 0 0;
   color: var(--color-text-secondary);
-
   font-size: var(--font-size-sm);
   line-height: var(--line-height-relaxed);
 }
 
-/* =========================================================
-   ADS LIST
-   ========================================================= */
+.emptyAction {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: var(--space-6);
+  padding-inline: var(--space-5);
+  color: var(--color-text-inverse);
+  background: var(--color-primary);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
 
 .adsList {
   display: grid;
-
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-
-  gap: var(--space-5);
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
 }
 
-/* =========================================================
-   AD CARD
-   ========================================================= */
-
 .adCard {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  min-height: 144px;
+  padding: 12px;
   overflow: hidden;
-  padding: 10px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-
   transition:
-    transform var(--transition-fast),
+    border-color var(--transition-fast),
     box-shadow var(--transition-fast),
-    border-color var(--transition-fast);
+    transform var(--transition-fast);
 }
 
 .adCard:hover {
-  transform: translateY(-2px);
-
   border-color: var(--color-primary-light);
-
   box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
-/* =========================================================
-   AD CONTENT
-   ========================================================= */
+.imageWrapper {
+  position: relative;
+  width: 160px;
+  height: 120px;
+  flex: 0 0 160px;
+  align-self: center;
+  overflow: hidden;
+  background: var(--color-listing-image-background);
+  border-radius: var(--radius-md);
+}
+
+.imageWrapper::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 65%, rgba(0, 0, 0, 0.24));
+  content: "";
+  pointer-events: none;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.adCard:hover .image {
+  transform: scale(1.04);
+}
+
+.noImage {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: var(--color-text-muted);
+}
+
+.noImage svg {
+  width: 28px;
+  height: 28px;
+}
+
+.statusBadge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1;
+  padding: 4px 7px;
+  color: var(--color-badge-text);
+  background: var(--color-badge-background);
+  border-radius: var(--radius-sm);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
 
 .adContent {
-  padding: var(--space-5);
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  padding: 4px 0;
+}
+
+.adTopline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+}
+
+.category {
+  overflow: hidden;
+  color: var(--color-primary-light);
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.condition {
+  flex-shrink: 0;
+  text-transform: capitalize;
 }
 
 .adTitle {
-  margin: 0;
-
-  color: var(--color-text);
-
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-semibold);
-
-  line-height: var(--line-height-tight);
-}
-
-.adDescription {
-  display: -webkit-box;
-
-  margin: var(--space-3) 0 0;
-
+  display: block;
+  margin: 6px 0 0;
   overflow: hidden;
-
-  color: var(--color-text-secondary);
-
-  font-size: var(--font-size-sm);
-  line-height: var(--line-height-relaxed);
-
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  color: var(--color-listing-title);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+  white-space: nowrap;
 }
 
-/* =========================================================
-   AD META
-   ========================================================= */
+.price {
+  order: -1;
+  margin: 0;
+  color: var(--color-listing-price);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
 
 .adMeta {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-
   gap: var(--space-2);
-
-  margin-top: var(--space-5);
-
-  color: var(--color-text-muted);
-
-  font-size: var(--font-size-xs);
+  margin-top: auto;
+  padding-top: var(--space-4);
+  color: var(--color-listing-location);
+  font-size: 0.75rem;
+  text-transform: uppercase;
 }
 
 .adMeta span {
-  padding: var(--space-1) var(--space-2);
-
-  background: var(--color-background);
-
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.adMeta span:first-child {
-  color: var(--color-primary);
-
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-bold);
+.adMeta span + span {
+  padding-left: var(--space-2);
+  border-left: 1px solid var(--color-border);
 }
 
-/* =========================================================
-   AD ACTIONS
-   ========================================================= */
+.adMeta svg {
+  width: 14px;
+  height: 14px;
+}
 
 .adActions {
-  display: flex;
+  position: relative;
+  flex: 0 0 168px;
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  padding: 22px 0 0 16px;
+  border-left: 1px solid var(--color-border);
+}
+
+.overflowButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  place-items: center;
+  padding: 2px;
+  color: var(--color-text-muted);
+}
+
+.overflowButton:hover {
+  color: var(--color-text);
+}
+
+.overflowButton svg {
+  width: 20px;
+  height: 20px;
+}
+
+.viewButton,
+.editButton,
+.soldButton,
+.deleteButton {
+  min-height: 34px;
+  display: inline-flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
+  gap: 6px;
+  padding-inline: 8px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+}
 
-  margin-top: var(--space-5);
+.viewButton,
+.soldButton {
+  color: var(--color-text-secondary);
+  background: transparent;
+  border-color: var(--color-border);
+}
 
-  padding-top: var(--space-4);
-
-  border-top: 1px solid var(--color-border);
+.viewButton:hover,
+.soldButton:hover {
+  color: var(--color-text);
+  background: var(--color-surface-hover);
+  border-color: var(--color-border-hover);
 }
 
 .editButton {
-  min-height: 40px;
-
-  padding: 0 var(--space-5);
-
-  border: 1px solid var(--color-primary);
-
-  border-radius: var(--radius-md);
-
-  background: transparent;
-  color: var(--color-primary);
-
-  font-family: inherit;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-
-  cursor: pointer;
-
-  transition:
-    background-color var(--transition-fast),
-    color var(--transition-fast),
-    border-color var(--transition-fast),
-    box-shadow var(--transition-fast),
-    transform var(--transition-fast);
+  color: var(--button-primary-text);
+  background: var(--button-primary-background);
 }
 
 .editButton:hover {
-  background: var(--color-primary);
-  color: #ffffff;
-
-  border-color: var(--color-primary);
-
-  box-shadow: var(--shadow-sm);
+  background: var(--button-primary-hover);
 }
-
-.editButton:active {
-  transform: translateY(1px);
-}
-
-.editButton:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 3px;
-}
-
-.editButton:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* =========================================================
-   DELETE BUTTON
-   ========================================================= */
 
 .deleteButton {
-  min-height: 40px;
-  margin-left: 10px;
-  padding: 0 var(--space-5);
-
-  border: 1px solid var(--color-danger);
-
-  border-radius: var(--radius-md);
-
-  background: transparent;
   color: var(--color-danger);
-
-  font-family: inherit;
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-
-  cursor: pointer;
-
-  transition:
-    background-color var(--transition-fast),
-    color var(--transition-fast),
-    border-color var(--transition-fast),
-    box-shadow var(--transition-fast),
-    transform var(--transition-fast);
+  background: transparent;
+  border-color: var(--color-danger-soft);
 }
 
 .deleteButton:hover {
+  color: var(--color-text);
   background: var(--color-danger);
-  color: #ffffff;
-
   border-color: var(--color-danger);
-
-  box-shadow: var(--shadow-sm);
 }
 
-.deleteButton:active {
-  transform: translateY(1px);
-}
-
-.deleteButton:focus-visible {
-  outline: 2px solid var(--color-danger);
-  outline-offset: 3px;
-}
-
+.viewButton:disabled,
+.editButton:disabled,
+.soldButton:disabled,
 .deleteButton:disabled {
-  opacity: 0.6;
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
+.viewButton svg,
+.editButton svg,
+.soldButton svg,
+.deleteButton svg {
+  width: 15px;
+  height: 15px;
+}
 
-@media (max-width: 768px) {
-  .page {
-    padding-block: var(--space-6);
+@media (max-width: 1024px) {
+  .adCard {
+    gap: 14px;
   }
 
-  .adsList {
-    grid-template-columns: 1fr;
+  .imageWrapper {
+    width: 140px;
+    height: 105px;
+    flex-basis: 140px;
   }
 }
 
 @media (max-width: 640px) {
+  .page {
+    padding-block: var(--space-6);
+  }
+
   .header {
-    margin-bottom: var(--space-5);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-5);
   }
 
   .title {
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-2xl);
   }
 
-  .emptyState {
-    padding: var(--space-8) var(--space-5);
+  .adCard {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .imageWrapper {
+    width: 96px;
+    height: 72px;
+    flex-basis: 96px;
   }
 
   .adContent {
-    padding: var(--space-4);
+    padding: 0;
+  }
+
+  .adActions {
+    grid-column: 1 / -1;
+    width: 100%;
+    flex-basis: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 12px 0 0;
+    border-top: 1px solid var(--color-border);
+    border-left: 0;
   }
 }

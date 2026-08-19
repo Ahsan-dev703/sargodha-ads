@@ -1,0 +1,91 @@
+BottomNav mobile positioning issue
+===================================
+
+Root cause
+----------
+BottomNav is rendered inside Navbar's <header> element:
+
+  <header className={styles.header}>
+    <div className={styles.container}>
+      <TopBar ... />
+      <BottomNav />
+      ...
+    </div>
+  </header>
+
+Navbar.module.css applies `backdrop-filter: blur(16px)` to `.header`.
+A transformed or filtered ancestor can create a containing block for a
+`position: fixed` descendant. Because BottomNav is nested inside that header,
+the browser may position it relative to the header rather than the viewport.
+This is why `bottom: 0` can appear not to move the bar to the screen bottom.
+
+Relevant current rules
+----------------------
+`.bottomNav` is hidden by default and only displayed below 767px. Its mobile
+rule currently uses fixed positioning, but it is still nested under `.header`:
+
+  @media (max-width: 767px) {
+    .bottomNav {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1000;
+      ...
+    }
+  }
+
+The requested mobile breakpoint is usually written as `max-width: 768px`.
+With `767px`, a viewport exactly 768px wide will not receive the mobile rule.
+
+Content spacing
+---------------
+AppLayout.module.css and Home.module.css already reserve 80px of bottom
+space on mobile. Other public pages that render Navbar directly should also
+reserve equivalent bottom space if they contain scrollable content.
+
+Recommended fix
+---------------
+1. Render BottomNav outside the filtered/sticky header, for example as a
+   sibling of `<header>` in Navbar or in the layout:
+
+     <>
+       <header>...</header>
+       <BottomNav />
+     </>
+
+2. Keep the mobile rule on the extracted BottomNav:
+
+     @media (max-width: 768px) {
+       .bottomNav {
+         position: fixed;
+         right: 0;
+         bottom: 0;
+         left: 0;
+         width: 100%;
+         z-index: 999;
+       }
+     }
+
+3. Keep desktop `.bottomNav { display: none; }` and use `display: grid` or
+   `display: flex` only inside the mobile media query.
+
+4. Preserve at least 80px bottom padding on every page container used with the
+   mobile BottomNav so the last content item is not covered.
+
+Secondary checks
+----------------
+- Confirm no ancestor of BottomNav has `transform`, `filter`,
+  `backdrop-filter`, `perspective`, or `contain` if BottomNav remains nested.
+- Check z-index stacking if Sidebar or modal overlays are open.
+- Test at 767px, 768px, and a narrow phone width because the breakpoint is
+  currently 767px.
+
+Resolution applied
+------------------
+- Moved BottomNav outside Navbar's filtered/sticky header.
+- Moved SearchOverlay outside the filtered/sticky header as well.
+- Changed the mobile breakpoint to `max-width: 768px`.
+- Set BottomNav to viewport-level `position: fixed`, `bottom: 0`,
+  `left: 0`, `right: 0`, `width: 100%`, and `z-index: 999`.
+- Kept 80px bottom clearance in AppLayout and Home.

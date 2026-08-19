@@ -7,6 +7,7 @@ import { createAd } from "@/services/ads.service";
 import Input from "@/components/ui/Input/Input";
 import Button from "@/components/ui/Button/Button";
 import Alert from "@/components/ui/Alert/Alert";
+import Modal from "@/components/ui/Modal/Modal";
 
 import styles from "./CreateAd.module.css";
 
@@ -71,11 +72,13 @@ function CreateAd() {
   };
 
   return (
-    <section className={styles.page}>
+    <Modal
+      open
+      onClose={() => navigate("/my-ads", { replace: true })}
+      title="Create an Ad"
+    >
       <div className={styles.card}>
         <div className={styles.header}>
-          <h1 className={styles.title}>Create an Ad</h1>
-
           <p className={styles.subtitle}>
             Add your item and start selling on Sargodha Ads.
           </p>
@@ -263,7 +266,7 @@ function CreateAd() {
           </div>
         </form>
       </div>
-    </section>
+    </Modal>
   );
 }
 

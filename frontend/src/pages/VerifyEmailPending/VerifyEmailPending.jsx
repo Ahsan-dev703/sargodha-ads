@@ -1,13 +1,15 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { resendVerificationEmail } from "@/services/auth.service";
 import Button from "@/components/ui/Button/Button";
 import Alert from "@/components/ui/Alert/Alert";
-import { FiMail, FiRefreshCw } from "react-icons/fi";
+import Modal from "@/components/ui/Modal/Modal";
+import { FiArrowLeft, FiMail, FiRefreshCw } from "react-icons/fi";
 import styles from "./VerifyEmailPending.module.css";
 
 function VerifyEmailPending() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const email = location.state?.email;
 
@@ -44,15 +46,13 @@ function VerifyEmailPending() {
     }
   };
   return (
-    <div className={styles.page}>
+    <Modal open onClose={() => navigate("/")} title="Check your email">
       <div className={styles.card}>
         <div className={styles.icon} aria-hidden="true">
           <FiMail />
         </div>
 
         <div className={styles.header}>
-          <h1 className={styles.title}>Check your email</h1>
-
           <p className={styles.description}>
             We've sent a verification link to your email address.
           </p>
@@ -88,17 +88,20 @@ function VerifyEmailPending() {
             {!isSending && <FiRefreshCw aria-hidden="true" />}
             Resend verification email
           </Button>
+        </div>
 
-          <Button as={Link} to="/login" size="lg" fullWidth>
-            Go to login
-          </Button>
+        <div className={styles.footerLink}>
+          <Link to="/login" className={styles.backLink}>
+            <FiArrowLeft aria-hidden="true" />
+            Back to login
+          </Link>
         </div>
 
         <p className={styles.footer}>
           Didn't receive the email? Check your spam or junk folder.
         </p>
       </div>
-    </div>
+    </Modal>
   );
 }
 

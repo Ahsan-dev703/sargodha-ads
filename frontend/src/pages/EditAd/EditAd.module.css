@@ -6,8 +6,12 @@
   width: 100%;
 
   padding-block: var(--space-8);
+  background: radial-gradient(
+    circle at 85% 4%,
+    var(--color-primary-soft),
+    transparent 28%
+  );
 }
-
 
 /* =========================================================
    CARD
@@ -23,11 +27,11 @@
   background: var(--color-surface);
 
   border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-primary);
   border-radius: var(--radius-xl);
 
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-lg);
 }
-
 
 /* =========================================================
    HEADER
@@ -57,7 +61,6 @@
   line-height: var(--line-height-relaxed);
 }
 
-
 /* =========================================================
    ALERT
    ========================================================= */
@@ -65,7 +68,6 @@
 .alert {
   margin-bottom: var(--space-6);
 }
-
 
 /* =========================================================
    LOADING STATE
@@ -87,7 +89,6 @@
   font-size: var(--font-size-sm);
 }
 
-
 /* =========================================================
    FORM
    ========================================================= */
@@ -98,7 +99,6 @@
 
   gap: var(--space-5);
 }
-
 
 /* =========================================================
    CUSTOM FIELDS
@@ -186,7 +186,6 @@
   line-height: var(--line-height-normal);
 }
 
-
 /* =========================================================
    LOCATION
    ========================================================= */
@@ -198,6 +197,7 @@
   gap: var(--space-4);
 
   padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
 }
 
 .sectionTitle {
@@ -219,7 +219,6 @@
   gap: var(--space-5);
 }
 
-
 /* =========================================================
    ACTIONS
    ========================================================= */
@@ -240,7 +239,6 @@
   min-width: 140px;
 }
 
-
 /* =========================================================
    RESPONSIVE
    ========================================================= */
@@ -258,7 +256,6 @@
     grid-template-columns: 1fr;
   }
 }
-
 
 @media (max-width: 640px) {
   .card {

@@ -4,6 +4,14 @@
   padding-block: clamp(var(--space-8), 6vw, var(--space-16));
 }
 
+.content {
+  width: min(
+    calc(100% - (var(--container-padding-desktop) * 2)),
+    var(--content-width)
+  );
+  margin-inline: auto;
+}
+
 .header {
   position: relative;
   display: flex;
@@ -220,14 +228,29 @@
 }
 
 @media (max-width: 1024px) {
+  .content {
+    width: min(
+      calc(100% - (var(--container-padding-tablet) * 2)),
+      var(--content-width)
+    );
+  }
+
   .adsGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  .content {
+    width: min(
+      calc(100% - (var(--container-padding-mobile) * 2)),
+      var(--content-width)
+    );
+  }
+
   .page {
     padding-block: var(--space-6);
+    padding-bottom: 80px;
   }
 
   .header {

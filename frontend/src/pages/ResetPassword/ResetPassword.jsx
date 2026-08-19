@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FiArrowLeft, FiCheckCircle, FiLock, FiSave } from "react-icons/fi";
 
@@ -13,7 +13,6 @@ import styles from "./ResetPassword.module.css";
 
 function ResetPassword() {
   const { token } = useParams();
-  const navigate = useNavigate();
 
   const [serverError, setServerError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -74,10 +73,11 @@ function ResetPassword() {
             using your new password.
           </p>
 
-          <div className={styles.actions}>
-            <Button as={Link} to="/login" size="lg" fullWidth>
-              Go to login
-            </Button>
+          <div className={styles.footer}>
+            <Link to="/login" className={styles.backLink}>
+              <FiArrowLeft aria-hidden="true" />
+              Back to login
+            </Link>
           </div>
         </section>
       </main>

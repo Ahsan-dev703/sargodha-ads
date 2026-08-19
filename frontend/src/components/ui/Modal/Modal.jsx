@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
+import { FiX } from "react-icons/fi";
 
 import styles from "./Modal.module.css";
 
@@ -16,11 +17,12 @@ function Modal({ open = false, onClose, title, children }) {
     };
 
     document.addEventListener("keydown", handleKeyDown);
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
     };
   }, [open, onClose]);
 
@@ -29,7 +31,14 @@ function Modal({ open = false, onClose, title, children }) {
   }
 
   return createPortal(
-    <div className={styles.backdrop}>
+    <div
+      className={styles.backdrop}
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      }}
+    >
       <div
         className={styles.modal}
         role="dialog"
@@ -47,7 +56,7 @@ function Modal({ open = false, onClose, title, children }) {
             onClick={onClose}
             aria-label="Close modal"
           >
-            ×
+            <FiX />
           </button>
         </div>
 

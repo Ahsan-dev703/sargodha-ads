@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getMyAds, deleteAd } from "@/services/ads.service";
+import { getMyAds, deleteAd, updateAd } from "@/services/ads.service";
 import Alert from "@/components/ui/Alert/Alert";
 import Spinner from "@/components/ui/Spinner/Spinner";
+import MyAdCard from "./MyAdCard";
+import MyAdsEmptyState from "./MyAdsEmptyState";
+import MyAdsHeader from "./MyAdsHeader";
 import styles from "./MyAds.module.css";
 
 function MyAds() {
@@ -10,6 +13,7 @@ function MyAds() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [deletingId, setDeletingId] = useState(null);
+  const [updatingId, setUpdatingId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -81,17 +85,27 @@ function MyAds() {
     }
   };
 
+  const handleMarkAsSold = async (id) => {
+    try {
+      setError("");
+      setUpdatingId(id);
+
+      const response = await updateAd({ id, status: "sold" });
+      const updatedAd = response.data.ad;
+
+      setAds((currentAds) =>
+        currentAds.map((ad) => (ad._id === id ? updatedAd : ad)),
+      );
+    } catch (error) {
+      setError(error.message || "Unable to update this ad. Please try again.");
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
   return (
     <section className={styles.page}>
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>My Ads</h1>
-
-          <p className={styles.subtitle}>
-            Manage the ads you have posted on Sargodha Ads.
-          </p>
-        </div>
-      </div>
+      <MyAdsHeader />
 
       {error && (
         <div className={styles.alert}>
@@ -99,54 +113,21 @@ function MyAds() {
         </div>
       )}
 
-      {!error && ads.length === 0 && (
-        <div className={styles.emptyState}>
-          <h2 className={styles.emptyTitle}>You haven't posted any ads yet</h2>
-
-          <p className={styles.emptyDescription}>
-            Create your first ad and start selling on Sargodha Ads.
-          </p>
-        </div>
-      )}
+      {!error && ads.length === 0 && <MyAdsEmptyState />}
 
       {!error && ads.length > 0 && (
         <div className={styles.adsList}>
           {ads.map((ad) => (
-            <article className={styles.adCard} key={ad._id}>
-              <div className={styles.adContent}>
-                <h2 className={styles.adTitle}>{ad.title}</h2>
-
-                <p className={styles.adDescription}>{ad.description}</p>
-
-                <div className={styles.adMeta}>
-                  <span>Rs. {ad.price.toLocaleString()}</span>
-
-                  <span>{ad.category}</span>
-
-                  <span>{ad.condition}</span>
-
-                  <span>{ad.location?.city}</span>
-                </div>
-              </div>
-
-              <div className={styles.adActions}>
-                <button
-                  type="button"
-                  className={styles.editButton}
-                  onClick={() => navigate(`/edit-ad/${ad._id}`)}
-                >
-                  Edit
-                </button>
-                <button
-                  type="button"
-                  className={styles.deleteButton}
-                  onClick={() => handleDelete(ad._id)}
-                  disabled={deletingId === ad._id}
-                >
-                  {deletingId === ad._id ? "Deleting..." : "Delete"}
-                </button>
-              </div>
-            </article>
+            <MyAdCard
+              key={ad._id}
+              ad={ad}
+              isDeleting={deletingId === ad._id}
+              isUpdating={updatingId === ad._id}
+              onEdit={() => navigate(`/edit-ad/${ad._id}`)}
+              onView={() => navigate(`/ads/${ad._id}`)}
+              onDelete={() => handleDelete(ad._id)}
+              onMarkAsSold={() => handleMarkAsSold(ad._id)}
+            />
           ))}
         </div>
       )}

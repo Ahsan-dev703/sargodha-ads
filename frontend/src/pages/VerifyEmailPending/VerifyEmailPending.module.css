@@ -10,18 +10,10 @@
 }
 
 .card {
-  width: min(100%, 460px);
-
-  padding: var(--space-8);
-
+  width: 100%;
+  padding: 0;
   text-align: center;
-
-  background: var(--color-surface);
-
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-xl);
-
-  box-shadow: var(--shadow-lg);
+  background: transparent;
 }
 
 .icon {
@@ -98,6 +90,30 @@
   gap: var(--space-3);
 }
 
+.footerLink {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-5);
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+}
+
+.backLink:hover {
+  color: var(--color-primary);
+}
+
+.backLink svg {
+  width: 16px;
+  height: 16px;
+}
+
 .icon {
   width: 64px;
   height: 64px;
@@ -144,6 +160,6 @@
   }
 
   .card {
-    padding: var(--space-6);
+    padding: 0;
   }
 }

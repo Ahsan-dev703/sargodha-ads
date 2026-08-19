@@ -1,6 +1,11 @@
 .page {
   min-height: calc(100vh - var(--navbar-height));
   padding-block: var(--space-10);
+  background: radial-gradient(
+    circle at 82% 4%,
+    var(--color-primary-soft),
+    transparent 28%
+  );
 }
 
 .container {
@@ -48,6 +53,7 @@
   background: var(--card-background);
 
   border: 1px solid var(--card-border);
+  border-top: 3px solid var(--color-primary);
   border-radius: var(--card-radius);
 
   box-shadow: var(--shadow-md);

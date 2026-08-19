@@ -31,11 +31,12 @@
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .mainContainer {
     width: min(
       calc(100% - (var(--container-padding-mobile) * 2)),
       var(--content-width)
     );
+    padding-bottom: 80px;
   }
 }

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import Alert from "@/components/ui/Alert/Alert";
 import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input/Input";
+import Modal from "@/components/ui/Modal/Modal";
 import { registerUser } from "@/services/auth.service";
 import styles from "./Register.module.css";
 
@@ -44,11 +45,13 @@ function Register() {
   };
 
   return (
-    <div className={styles.page}>
+    <Modal
+      open
+      onClose={() => navigate("/", { replace: true })}
+      title="Create your account"
+    >
       <div className={styles.card}>
         <div className={styles.header}>
-          <h1 className={styles.title}>Create your account</h1>
-
           <p className={styles.subtitle}>
             Join Sargodha Ads and start buying and selling locally.
           </p>
@@ -138,7 +141,7 @@ function Register() {
           </Link>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 }
 

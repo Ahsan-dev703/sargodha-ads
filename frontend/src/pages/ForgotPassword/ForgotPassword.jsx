@@ -1,17 +1,19 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { FiArrowLeft, FiMail, FiSend } from "react-icons/fi";
 
 import Alert from "@/components/ui/Alert/Alert";
 import Button from "@/components/ui/Button/Button";
 import Input from "@/components/ui/Input/Input";
+import Modal from "@/components/ui/Modal/Modal";
 
 import { forgotPassword } from "@/services/auth.service";
 
 import styles from "./ForgotPassword.module.css";
 
 function ForgotPassword() {
+  const navigate = useNavigate();
   const [serverError, setServerError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -42,15 +44,17 @@ function ForgotPassword() {
   };
 
   return (
-    <main className={styles.page}>
+    <Modal
+      open
+      onClose={() => navigate("/", { replace: true })}
+      title="Forgot your password?"
+    >
       <section className={styles.card}>
         <div className={styles.icon} aria-hidden="true">
           <FiMail />
         </div>
 
         <div className={styles.header}>
-          <h1 className={styles.title}>Forgot your password?</h1>
-
           <p className={styles.description}>
             Enter the email address associated with your Sargodha Ads account
             and we'll send you a link to reset your password.
@@ -105,7 +109,7 @@ function ForgotPassword() {
           </Link>
         </div>
       </section>
-    </main>
+    </Modal>
   );
 }
 

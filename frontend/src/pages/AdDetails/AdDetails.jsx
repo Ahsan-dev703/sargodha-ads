@@ -7,6 +7,7 @@ import Alert from "@/components/ui/Alert/Alert";
 import Spinner from "@/components/ui/Spinner/Spinner";
 import Button from "@/components/ui/Button/Button";
 
+import SellerCard from "./SellerCard";
 import styles from "./AdDetails.module.css";
 
 function AdDetails() {
@@ -134,35 +135,7 @@ function AdDetails() {
             </div>
           </div>
 
-          <aside className={styles.sellerCard}>
-            <h2 className={styles.sectionTitle}>Seller</h2>
-
-            <div className={styles.seller}>
-              <div className={styles.avatar}>
-                {ad.seller?.avatar ? (
-                  <img
-                    src={ad.seller.avatar}
-                    alt={ad.seller.name}
-                    className={styles.avatarImage}
-                  />
-                ) : (
-                  ad.seller?.name?.charAt(0).toUpperCase()
-                )}
-              </div>
-
-              <div>
-                <p className={styles.sellerName}>
-                  {ad.seller?.name || "Seller"}
-                </p>
-
-                {ad.seller?.location?.city && (
-                  <p className={styles.sellerLocation}>
-                    {ad.seller.location.city}
-                  </p>
-                )}
-              </div>
-            </div>
-          </aside>
+          <SellerCard seller={ad.seller} />
         </div>
       </div>
     </section>

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { FiAlertCircle, FiCheckCircle } from "react-icons/fi";
+import { FiAlertCircle, FiArrowLeft, FiCheckCircle } from "react-icons/fi";
 
 import Alert from "@/components/ui/Alert/Alert";
-import Button from "@/components/ui/Button/Button";
 import Spinner from "@/components/ui/Spinner/Spinner";
+import Modal from "@/components/ui/Modal/Modal";
 import { verifyEmail_fun } from "@/services/auth.service";
 
 import styles from "./VerifyEmail.module.css";
@@ -58,7 +58,7 @@ function VerifyEmail() {
 
   if (status === "loading") {
     return (
-      <main className={styles.page}>
+      <Modal open onClose={() => navigate("/")} title="Verify your email">
         <section className={styles.card}>
           <div className={styles.loadingIcon} aria-hidden="true">
             <Spinner label="Verifying email" />
@@ -70,14 +70,18 @@ function VerifyEmail() {
             Please wait while we verify your email address.
           </p>
         </section>
-      </main>
+      </Modal>
     );
   }
 
   const isSuccess = status === "success";
 
   return (
-    <main className={styles.page}>
+    <Modal
+      open
+      onClose={() => navigate("/")}
+      title={isSuccess ? "Email verified" : "Verification failed"}
+    >
       <section className={styles.card}>
         <div
           className={`${styles.icon} ${
@@ -87,10 +91,6 @@ function VerifyEmail() {
         >
           {isSuccess ? <FiCheckCircle /> : <FiAlertCircle />}
         </div>
-
-        <h1 className={styles.title}>
-          {isSuccess ? "Email verified" : "Verification failed"}
-        </h1>
 
         <Alert variant={isSuccess ? "success" : "error"}>{message}</Alert>
 
@@ -108,18 +108,18 @@ function VerifyEmail() {
           </p>
         )}
 
-        <div className={styles.actions}>
-          <Button
+        <div className={styles.footer}>
+          <button
             type="button"
-            size="lg"
-            className={styles.loginButton}
+            className={styles.backLink}
             onClick={() => navigate("/login")}
           >
-            Go to login
-          </Button>
+            <FiArrowLeft aria-hidden="true" />
+            Back to login
+          </button>
         </div>
       </section>
-    </main>
+    </Modal>
   );
 }
 
