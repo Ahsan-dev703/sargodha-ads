@@ -62,11 +62,6 @@ async function logoutUser() {
   });
 }
 
-const getCurrentUser = async () => {
-  return api("/users/me", {
-    method: "GET",
-  });
-};
 
 async function refreshAccessToken() {
   return api("/auth/refresh-token", {
@@ -82,6 +77,5 @@ export {
   forgotPassword,
   resetPassword,
   logoutUser,
-  getCurrentUser,
   refreshAccessToken,
 };

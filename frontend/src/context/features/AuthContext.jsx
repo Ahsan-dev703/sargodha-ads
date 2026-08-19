@@ -5,8 +5,8 @@ import {
   useMemo,
   useState,
 } from "react";
-
-import { getCurrentUser, loginUser, logoutUser } from "@/services/auth.service";
+import { updateCurrentUser } from "@/services/user.service";
+import { loginUser, logoutUser } from "@/services/auth.service";
 import { clearAccessToken, setAccessToken } from "@/services/token";
 
 const AuthContext = createContext(null);
@@ -90,6 +90,13 @@ function AuthProvider({ children }) {
     }
   }, []);
 
+  const updateProfile = async (updates) => {
+    const response = await updateCurrentUser(updates);
+    const updatedUser = response.data.user;
+    setUser(updatedUser);
+    return updatedUser;
+  };
+
   useEffect(() => {
     refreshSession();
   }, [refreshSession]);
@@ -102,6 +109,7 @@ function AuthProvider({ children }) {
       login,
       logout,
       refreshSession,
+      updateProfile,
     }),
     [user, loading, login, logout, refreshSession],
   );

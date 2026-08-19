@@ -16,6 +16,8 @@ import VerifyEmailPending from "@/pages/VerifyEmailPending/VerifyEmailPending";
 import VerifyEmail from "@/pages/VerifyEmail/VerifyEmail";
 import ForgotPassword from "@/pages/ForgotPassword/ForgotPassword";
 import ResetPassword from "@/pages/ResetPassword/ResetPassword";
+import EditAd from "@/pages/EditAd/EditAd";
+import AdDetails from "@/pages/AdDetails/AdDetails";
 
 function AppRouter() {
   return (
@@ -29,6 +31,7 @@ function AppRouter() {
         <Route path="/register" element={<Register />} />
         <Route path="/verify-email-pending" element={<VerifyEmailPending />} />
         <Route path="/verify-email/:token" element={<VerifyEmail />} />
+        <Route path="/ads/:id" element={<AdDetails />} />
       </Route>
 
       {/* Protected routes */}
@@ -37,6 +40,7 @@ function AppRouter() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/my-ads" element={<MyAds />} />
           <Route path="/create-ad" element={<CreateAd />} />
+          <Route path="/edit-ad/:id" element={<EditAd />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
       </Route>

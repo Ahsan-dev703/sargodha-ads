@@ -1,0 +1,366 @@
+/* =========================================================
+   MY ADS PAGE
+   ========================================================= */
+
+.page {
+  width: 100%;
+  padding-block: var(--space-8);
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: var(--space-6);
+}
+
+.title {
+  margin: 0;
+
+  color: var(--color-text);
+
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.subtitle {
+  margin-top: var(--space-2);
+
+  color: var(--color-text-secondary);
+
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+/* =========================================================
+   ALERT
+   ========================================================= */
+
+.alert {
+  margin-bottom: var(--space-6);
+}
+
+/* =========================================================
+   LOADING STATE
+   ========================================================= */
+
+.loadingState {
+  min-height: 300px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: var(--space-4);
+
+  color: var(--color-text-secondary);
+
+  text-align: center;
+}
+
+.loadingState p {
+  margin: 0;
+
+  font-size: var(--font-size-sm);
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.emptyState {
+  padding: var(--space-10) var(--space-6);
+
+  text-align: center;
+
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+
+  box-shadow: var(--shadow-sm);
+}
+
+.emptyTitle {
+  margin: 0;
+
+  color: var(--color-text);
+
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.emptyDescription {
+  max-width: 480px;
+
+  margin: var(--space-2) auto 0;
+
+  color: var(--color-text-secondary);
+
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+/* =========================================================
+   ADS LIST
+   ========================================================= */
+
+.adsList {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: var(--space-5);
+}
+
+/* =========================================================
+   AD CARD
+   ========================================================= */
+
+.adCard {
+  overflow: hidden;
+  padding: 10px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    border-color var(--transition-fast);
+}
+
+.adCard:hover {
+  transform: translateY(-2px);
+
+  border-color: var(--color-primary-light);
+
+  box-shadow: var(--shadow-md);
+}
+
+/* =========================================================
+   AD CONTENT
+   ========================================================= */
+
+.adContent {
+  padding: var(--space-5);
+}
+
+.adTitle {
+  margin: 0;
+
+  color: var(--color-text);
+
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+
+  line-height: var(--line-height-tight);
+}
+
+.adDescription {
+  display: -webkit-box;
+
+  margin: var(--space-3) 0 0;
+
+  overflow: hidden;
+
+  color: var(--color-text-secondary);
+
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* =========================================================
+   AD META
+   ========================================================= */
+
+.adMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  gap: var(--space-2);
+
+  margin-top: var(--space-5);
+
+  color: var(--color-text-muted);
+
+  font-size: var(--font-size-xs);
+}
+
+.adMeta span {
+  padding: var(--space-1) var(--space-2);
+
+  background: var(--color-background);
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.adMeta span:first-child {
+  color: var(--color-primary);
+
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+/* =========================================================
+   AD ACTIONS
+   ========================================================= */
+
+.adActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  margin-top: var(--space-5);
+
+  padding-top: var(--space-4);
+
+  border-top: 1px solid var(--color-border);
+}
+
+.editButton {
+  min-height: 40px;
+
+  padding: 0 var(--space-5);
+
+  border: 1px solid var(--color-primary);
+
+  border-radius: var(--radius-md);
+
+  background: transparent;
+  color: var(--color-primary);
+
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+
+  cursor: pointer;
+
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.editButton:hover {
+  background: var(--color-primary);
+  color: #ffffff;
+
+  border-color: var(--color-primary);
+
+  box-shadow: var(--shadow-sm);
+}
+
+.editButton:active {
+  transform: translateY(1px);
+}
+
+.editButton:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.editButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   DELETE BUTTON
+   ========================================================= */
+
+.deleteButton {
+  min-height: 40px;
+  margin-left: 10px;
+  padding: 0 var(--space-5);
+
+  border: 1px solid var(--color-danger);
+
+  border-radius: var(--radius-md);
+
+  background: transparent;
+  color: var(--color-danger);
+
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+
+  cursor: pointer;
+
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.deleteButton:hover {
+  background: var(--color-danger);
+  color: #ffffff;
+
+  border-color: var(--color-danger);
+
+  box-shadow: var(--shadow-sm);
+}
+
+.deleteButton:active {
+  transform: translateY(1px);
+}
+
+.deleteButton:focus-visible {
+  outline: 2px solid var(--color-danger);
+  outline-offset: 3px;
+}
+
+.deleteButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .page {
+    padding-block: var(--space-6);
+  }
+
+  .adsList {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    margin-bottom: var(--space-5);
+  }
+
+  .title {
+    font-size: var(--font-size-xl);
+  }
+
+  .emptyState {
+    padding: var(--space-8) var(--space-5);
+  }
+
+  .adContent {
+    padding: var(--space-4);
+  }
+}

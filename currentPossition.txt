@@ -1,0 +1,408 @@
+Sargodha Ads – Current Project Position and Architecture
+
+1. Project Overview
+This project is a full-stack marketplace web app called “Sargodha Ads”. The idea is to allow users in Sargodha to register, log in, verify their email, post ads, manage their listings, and browse products or services in a local marketplace.
+
+The application is split into two major parts:
+- Frontend: React + Vite app
+- Backend: Node.js + Express API
+- Database: MongoDB (likely via Mongoose)
+- Authentication: JWT-based auth with HttpOnly refresh cookie and memory-based access token
+- Email: verification, password reset, and account notifications
+
+This is a real-world application structure with authentication, protected routes, email flows, and a dashboard-style UI. It is not just a static demo; it is structured to become a full marketplace platform.
+
+2. Current Project Structure
+
+Root
+- backend/
+- frontend/
+- fix.txt
+- info.txt
+
+Backend structure
+- backend/package.json
+- backend/src/
+  - app.js
+  - server.js
+  - config/
+    - config.js
+    - database.js
+  - controllers/
+    - auth.controller.js
+    - user.controller.js
+  - middleware/
+    - auth.middleware.js
+    - error.middleware.js
+    - notFound.middleware.js
+  - models/
+    - RefreshToken.js
+    - User.js
+  - routes/
+    - auth.routes.js
+    - user.routes.js
+  - services/
+    - auth.service.js
+    - email.service.js
+    - refreshToken.service.js
+    - user.service.js
+  - templates/
+    - emails/
+      - password-reset/
+      - verification/
+  - utils/
+    - AppError.js
+    - crypto.js
+    - emailTemplate.js
+    - jwt.js
+    - response.js
+    - validation.js
+
+Frontend structure
+- frontend/package.json
+- frontend/vite.config.js
+- frontend/index.html
+- frontend/src/
+  - App.jsx
+  - main.jsx
+  - assets/
+  - components/
+    - ListingCard/
+    - Navbar/
+      - Navbar.jsx
+      - Navbar.module.css
+    - Sidebar/
+      - Sidebar.jsx
+      - Sidebar.module.css
+    - ui/
+      - Alert/
+      - Button/
+      - Input/
+      - Modal/
+      - Overlay/
+      - Spinner/
+  - context/
+    - AppProviders.jsx
+    - features/
+      - AuthContext.jsx
+  - hooks/
+    - useAuth.js
+  - layouts/
+    - AppLayout/
+    - PublicLayout/
+  - pages/
+    - CreateAd/
+    - Dashboard/
+    - ForgotPassword/
+    - Home/
+    - Login/
+    - MyAds/
+    - Profile/
+    - Register/
+    - ResetPassword/
+    - VerifyEmail/
+    - VerifyEmailPending/
+  - routes/
+    - AppRouter.jsx
+    - ProtectedRoute.jsx
+    - PublicRoute.jsx
+  - services/
+    - api.js
+    - auth.service.js
+    - token.js
+  - styles/
+    - globals.css
+    - variables.css
+  - utils/
+
+3. What the current project is doing
+
+Frontend responsibilities
+The frontend is built in React and uses route-based navigation to separate public and private pages.
+
+Public pages currently include:
+- Home
+- Login
+- Register
+- Forgot password
+- Reset password
+- Verify email
+- Verify email pending
+
+Protected pages include:
+- Dashboard
+- MyAds
+- CreateAd
+- Profile
+
+This means the app already has the concept of user-authenticated access and page protection.
+
+Backend responsibilities
+The backend exposes REST APIs for:
+- User registration
+- Email verification
+- Resend verification email
+- Login
+- Forgot password
+- Reset password
+- Refresh access token
+- Logout
+- Fetch current authenticated user
+
+The backend also handles:
+- password validation
+- email validation
+- JWT generation
+- refresh-token rotation
+- secure cookie management
+- centralized error handling
+
+4. Authentication architecture
+This project is using a modern and safer auth pattern:
+- refresh token stored in an HttpOnly cookie on backend
+- access token kept in memory on frontend
+- no access token in localStorage/sessionStorage
+
+This is good from a security perspective because browser storage is vulnerable to XSS attacks, while HttpOnly cookies are much harder to read from JavaScript.
+
+Current flow:
+1. User signs up.
+2. Backend creates user and sends verification email.
+3. User verifies email.
+4. User logs in.
+5. Backend creates access token + refresh token.
+6. Backend sends access token in response data and stores refresh token in HttpOnly cookie.
+7. Frontend stores access token in memory only.
+8. On refresh, the app should restore the session by hitting refresh-token endpoint.
+
+This is exactly the correct direction for a secure app.
+
+5. Important technical facts
+
+Backend auth files
+- backend/src/utils/jwt.js
+  - Generates access token and refresh token
+  - Verifies access token and refresh token
+
+- backend/src/middleware/auth.middleware.js
+  - Protects routes by checking Authorization header and JWT
+
+- backend/src/controllers/auth.controller.js
+  - Handles register/login/logout/refresh flows
+
+- backend/src/services/refreshToken.service.js
+  - Saves and rotates refresh tokens in database
+
+Frontend auth files
+- frontend/src/context/features/AuthContext.jsx
+  - Holds auth state for user, loading, and isAuthenticated
+  - Initializes session on app startup
+
+- frontend/src/hooks/useAuth.js
+  - Reads auth context
+
+- frontend/src/services/api.js
+  - Central API helper for making requests and refreshing expired tokens
+
+- frontend/src/services/token.js
+  - Keeps access token in memory only
+
+This structure is solid and is the correct base for a production-like auth system.
+
+6. Already implemented features
+Based on the current project structure, the app already has the following features started or almost finished:
+- User registration
+- Email verification workflow
+- Login/logout flow
+- Password reset flow
+- JWT-based authentication
+- Protected routes
+- Dashboard shell
+- My Ads page shell
+- Create ad page shell
+- Profile page shell
+- Navbar and sidebar layouts
+- Reusable UI components
+- CSS module styling
+
+This is a strong foundation. The project is no longer just a starter template; it is already a real application skeleton.
+
+7. What is missing / still to build
+The project still needs the actual marketplace functionality. The following are essential next steps.
+
+A. Ad listing system
+This is the main business feature.
+Need to build:
+- Ad model in MongoDB
+- Ad create form
+- Ad update form
+- Ad delete functionality
+- Ad list page
+- Ad detail page
+- Search and filtering
+- Category-based browsing
+- Sorting by newest, oldest, price, location
+
+B. User profile system
+Need:
+- profile edit form
+- profile photo upload
+- phone number and location fields
+- address and city selection
+- change password feature
+
+C. Dashboard improvements
+Need:
+- total listings count
+- active posts
+- pending moderation status
+- recent ads
+- user analytics
+
+D. Listing card behavior
+The ListingCard component exists but likely needs to be connected to real ad data and display fields like:
+- title
+- price
+- location
+- image
+- category
+- date
+- seller info
+
+E. Image upload support
+This is critical for a marketplace.
+Need:
+- Cloudinary or Supabase image hosting
+- multiple images per ad
+- preview in frontend
+- file validation
+
+F. Real database models
+The app already has User and RefreshToken models, but for a marketplace it must also have:
+- Ad model
+- Category model
+- Message/Inquiry model (optional)
+- Favorite or saved ad model (optional)
+
+G. Search and browse experience
+Need:
+- homepage featured listings
+- search by keyword
+- filtering by area/category/price
+- map-like or list style display
+
+H. Admin moderation
+For a real local marketplace, a future admin flow is useful:
+- approve/reject ad submissions
+- report management
+- user review flow
+
+I. Payment / premium features (optional later)
+Not required initially, but can be added if the app evolves into a monetized platform.
+
+8. Best next build order
+The recommended sequence is very important.
+
+Phase 1: Stabilize the core app
+- fix any remaining auth edge cases
+- verify protected routes work after refresh
+- ensure refresh token rotation is consistent
+- test login/logout and email verification thoroughly
+- fix API error handling edge cases
+
+Phase 2: Build the ad domain
+- create Ad model in backend
+- create CRUD APIs
+- connect frontend forms to API
+- allow user to create and view their ads
+
+Phase 3: Listing pages and homepage
+- build home page ad feed
+- build detail page for each ad
+- add filters, categories, and search
+
+Phase 4: Seller dashboard and profile
+- show user’s ads and analytics
+- edit profile
+- manage seller information
+
+Phase 5: media and polish
+- add ad photos
+- make UI more modern and responsive
+- add loading spinners, empty states, and alerts
+
+Phase 6: deploy and production hardening
+- environment security review
+- production build checks
+- database indexing
+- API rate limiting
+- CORS and cookie hardening
+
+9. Recommended immediate next milestone
+The next most important feature should be:
+- “Create Ad” working end-to-end with backend API and database storage.
+
+Why this is the best next milestone:
+- It validates the app as a real marketplace.
+- It connects frontend form interactions to backend models.
+- It proves the entire full-stack pipeline is working.
+- It unlocks the homepage listing feed and dashboard listing management.
+
+10. Suggested technical roadmap for the project
+Backend roadmap
+- User auth complete or nearly complete
+- Add Ad model
+- Add Ad controller and routes
+- Add upload logic for images
+- Add validation for ad fields
+- Add search/filter APIs
+- Add GET /ads, GET /ads/:id, POST /ads, PATCH /ads/:id, DELETE /ads/:id
+
+Frontend roadmap
+- Home page fetches ads from backend
+- ListingCard displays ad data properly
+- CreateAd page submits to backend
+- MyAds page loads user-owned ads
+- Dashboard shows real counts
+- Profile page loads and edits user info
+
+11. Current project status summary
+Current stage:
+- Authentication foundation is in place
+- Protected/public routing exists
+- Email verification system is present
+- Refresh-token approach is secure and correct
+- App is close to becoming a real marketplace, but core ads functionality still needs to be built
+
+In simple words:
+The project is now a strong startup version of a local classified ads platform, but the real marketplace functionality — listing creation, listing display, browsing, and management — is still the next major build.
+
+12. Final recommendation
+If we continue building this project in the correct order, the best next goal is:
+- complete user auth stability
+- then create real ads backend + model
+- then connect frontend create-ad and listing pages
+- then build the home page feed
+- then continue with dashboard and profile flows
+
+This is the logical path to turn this project from a prototype into a usable marketplace product.
+
+13. Important note about security
+The project is already moving in the right direction by avoiding localStorage for tokens. That is good practice. For production, we should keep this rule throughout the app:
+- never store JWT access tokens in localStorage or sessionStorage
+- keep refresh tokens in HttpOnly cookies only
+- use short-lived access tokens in memory
+- secure cookies with httpOnly, secure, sameSite, and proper production config
+
+14. Conclusion
+This project has a solid full-stack architecture and a strong base for a marketplace app. The major missing piece is marketplace data and ad management. Once ad creation and viewing are functional, the app will become a real live product.
+
+The next big milestone is not just another page; it is the end-to-end ad lifecycle:
+- create ad
+- save in database
+- show on homepage
+- manage from user dashboard
+- edit and delete
+- filter and search
+
+That should be our next major build focus.

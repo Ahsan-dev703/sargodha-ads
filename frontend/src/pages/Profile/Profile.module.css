@@ -1,0 +1,275 @@
+.page {
+  min-height: calc(100vh - var(--navbar-height));
+  padding-block: var(--space-10);
+}
+
+.container {
+  width: min(calc(100% - (var(--container-padding-desktop) * 2)), 960px);
+
+  margin-inline: auto;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-6);
+
+  margin-bottom: var(--space-8);
+}
+
+.title {
+  margin-bottom: var(--space-2);
+
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.subtitle {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+}
+
+.editButton {
+  flex-shrink: 0;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.alert {
+  margin-bottom: var(--space-6);
+}
+
+.profileCard {
+  overflow: hidden;
+
+  background: var(--card-background);
+
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+
+  box-shadow: var(--shadow-md);
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+
+  padding: var(--space-8);
+}
+
+.avatar {
+  width: var(--avatar-xl);
+  height: var(--avatar-xl);
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: var(--radius-full);
+
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+
+  border: 1px solid var(--color-primary);
+
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.profileIdentity {
+  min-width: 0;
+}
+
+.profileIdentity h2 {
+  margin-bottom: var(--space-1);
+
+  font-size: var(--font-size-xl);
+}
+
+.profileIdentity p {
+  margin-bottom: var(--space-2);
+
+  overflow: hidden;
+
+  color: var(--color-text-secondary);
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.verified,
+.unverified {
+  display: inline-flex;
+  align-items: center;
+
+  padding: var(--space-1) var(--space-3);
+
+  border-radius: var(--radius-full);
+
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
+.verified {
+  background: var(--color-success-soft);
+  color: var(--color-success);
+}
+
+.unverified {
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
+}
+
+.divider {
+  height: 1px;
+
+  background: var(--color-border);
+}
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 1px;
+
+  background: var(--color-border);
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+
+  min-height: 110px;
+
+  padding: var(--space-6);
+
+  background: var(--color-surface);
+}
+
+.detailIcon {
+  width: var(--avatar-md);
+  height: var(--avatar-md);
+
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: var(--radius-md);
+
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+
+  font-size: var(--font-size-lg);
+}
+
+.detailLabel {
+  display: block;
+
+  margin-bottom: var(--space-1);
+
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.detail strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: var(--color-text);
+
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.form {
+  padding: var(--space-8);
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: var(--space-6);
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+
+  margin-top: var(--space-8);
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding-block: var(--space-6);
+  }
+
+  .container {
+    width: min(
+      calc(100% - (var(--container-padding-tablet) * 2)),
+      var(--content-width)
+    );
+  }
+
+  .header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .editButton {
+    align-self: flex-start;
+  }
+
+  .details {
+    grid-template-columns: 1fr;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .container {
+    width: min(
+      calc(100% - (var(--container-padding-mobile) * 2)),
+      var(--content-width)
+    );
+  }
+
+  .profileHeader {
+    align-items: flex-start;
+
+    padding: var(--space-6);
+  }
+
+  .form {
+    padding: var(--space-6);
+  }
+
+  .formActions {
+    flex-direction: column-reverse;
+  }
+
+  .formActions button {
+    width: 100%;
+  }
+
+  .detail {
+    padding: var(--space-5);
+  }
+}

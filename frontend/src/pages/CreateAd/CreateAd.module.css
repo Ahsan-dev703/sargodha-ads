@@ -1,0 +1,252 @@
+/* =========================================================
+   CREATE AD PAGE
+   ========================================================= */
+
+.page {
+  width: 100%;
+
+  padding-block: var(--space-8);
+}
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.card {
+  width: min(100%, 760px);
+
+  margin-inline: auto;
+
+  padding: var(--space-8);
+
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+
+  box-shadow: var(--shadow-sm);
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.header {
+  margin-bottom: var(--space-7);
+}
+
+.title {
+  margin: 0;
+
+  color: var(--color-text);
+
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+
+  line-height: var(--line-height-tight);
+}
+
+.subtitle {
+  margin: var(--space-2) 0 0;
+
+  color: var(--color-text-secondary);
+
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+/* =========================================================
+   ALERT
+   ========================================================= */
+
+.alert {
+  margin-bottom: var(--space-6);
+}
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.form {
+  display: flex;
+  flex-direction: column;
+
+  gap: var(--space-5);
+}
+
+/* =========================================================
+   CUSTOM FIELD
+   ========================================================= */
+
+.field {
+  display: flex;
+  flex-direction: column;
+
+  gap: var(--space-2);
+}
+
+.label {
+  color: var(--color-text);
+
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+}
+
+.textarea,
+.select {
+  width: 100%;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+
+  background: var(--color-background);
+  color: var(--color-text);
+
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
+}
+
+.textarea {
+  min-height: 150px;
+
+  padding: var(--space-3) var(--space-4);
+
+  resize: vertical;
+}
+
+.select {
+  min-height: 44px;
+
+  padding: 0 var(--space-4);
+
+  cursor: pointer;
+}
+
+.textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+.textarea:focus,
+.select:focus {
+  outline: none;
+
+  border-color: var(--color-primary);
+
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+.textarea:disabled,
+.select:disabled {
+  opacity: 0.7;
+
+  cursor: not-allowed;
+}
+
+.inputError {
+  border-color: var(--color-danger);
+}
+
+.errorMessage {
+  margin: 0;
+
+  color: var(--color-danger);
+
+  font-size: var(--font-size-xs);
+  line-height: var(--line-height-normal);
+}
+
+/* =========================================================
+   LOCATION
+   ========================================================= */
+
+.locationSection {
+  display: flex;
+  flex-direction: column;
+
+  gap: var(--space-4);
+
+  padding-top: var(--space-2);
+}
+
+.sectionTitle {
+  margin: 0;
+
+  color: var(--color-text);
+
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+
+  line-height: var(--line-height-tight);
+}
+
+.locationGrid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: var(--space-5);
+}
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: var(--space-3);
+
+  padding-top: var(--space-3);
+
+  border-top: 1px solid var(--color-border);
+}
+
+.actions > * {
+  min-width: 140px;
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 768px) {
+  .page {
+    padding-block: var(--space-6);
+  }
+
+  .card {
+    padding: var(--space-6);
+  }
+
+  .locationGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .card {
+    padding: var(--space-5);
+
+    border-radius: var(--radius-lg);
+  }
+
+  .title {
+    font-size: var(--font-size-xl);
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .actions > * {
+    width: 100%;
+  }
+}
